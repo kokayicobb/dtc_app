@@ -1,4 +1,4 @@
-# consuelo
+# Consuelo
 
 A new Flutter project.
 
