@@ -1,4 +1,4 @@
-import 'package:consuelo/Ui/Shop/shop_screen.dart';
+import 'package:consuelo/Shop/shop_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 48, 57, 231)),
         useMaterial3: true,
-        textTheme: GoogleFonts.dosisTextTheme( // Set the default text theme to Roboto
+        textTheme: GoogleFonts.robotoMonoTextTheme( // Set the default text theme to Roboto
           Theme.of(context).textTheme.apply(bodyColor: Colors.black, displayColor: Colors.black),
         ),
       ),
-      home:  ProductDescriptionScreen(),
+      home:  NikeProductPage(),
     );
   }
 }
