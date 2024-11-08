@@ -3,6 +3,7 @@ import 'package:consuelo/Utils/responsize.dart';
 import 'package:consuelo/Utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FirstScreen extends StatefulWidget {
   final VoidCallback onComplete; // Add this callback
@@ -43,15 +44,69 @@ class _FirstScreenState extends State<FirstScreen> {
     'Loose Fit',
   ];
 
-  void checkIfComplete() {
+  
+Future<void> submitDataToSupabase() async {
+    try {
+      final supabase = Supabase.instance.client;
+      
+      // Get current user ID
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) {
+        debugPrint('No user is signed in');
+        return;
+      }
+
+      await supabase.from('fit_calculator').insert({
+        'user_id': userId,  // Associate data with the user
+        'head_circumference': headCircumference,
+        'head_shape': headShape,
+        'typical_hairstyle': typicalHairstyle,
+        'fit_preference': fitPreference,
+      });  // Removed .execute()
+
+      debugPrint('Data saved successfully');
+      // Call the completion callback after successful save
+      if (mounted) {  // Check if widget is still mounted
+        widget.onComplete();
+      }
+      
+    } catch (e) {
+      debugPrint('Error saving data: $e');
+      if (mounted) {  // Check if widget is still mounted
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error saving data. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> checkIfComplete() async {
     if (headCircumference != null &&
         headShape != null &&
         typicalHairstyle != null &&
         fitPreference != null) {
-      widget.onComplete(); // Use callback to show SecondScreen
+      // Show loading indicator
+      showDialog(
+        barrierColor: Colors.transparent,
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(child: Text('')),
+      );
+
+      try {
+        await submitDataToSupabase();
+        // Remove loading indicator
+        Navigator.pop(context);
+      } catch (e) {
+        // Remove loading indicator
+        Navigator.pop(context);
+        // Error already handled in submitDataToSupabase
+      }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     double fontSize = 10;

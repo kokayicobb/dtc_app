@@ -341,7 +341,7 @@ class _NikeProductPageState extends State<NikeProductPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'The Nike Air Max 270 combines the best features of two icons of Air...',
+            'The Kask Dogma combines the best features of two icons of safety...',
             maxLines: _isDescriptionExpanded ? null : 3,
             overflow: _isDescriptionExpanded ? null : TextOverflow.ellipsis,
           ),

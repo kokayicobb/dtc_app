@@ -98,7 +98,7 @@ class SizeGuideButton extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                text: 'Predict exact size', // Text to underline
+                text: 'Get exact size', // Text to underline
                 style: TextStyle(
                   decoration:
                       TextDecoration.underline, // Underline only this part
